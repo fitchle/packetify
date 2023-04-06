@@ -76,7 +76,7 @@ Here's why:
 * It is an **asynchronous** library.
 
 ### Built With
-<p style="margin: 0; line-height: 20px;">In this project, netty was used as socket library, gson was used as json library, lombok was used as code generation library.</p>
+<p style="margin: 0; line-height: 20px;">In this project, `fastify` was used as server base, `zod` was used as validation, `@fastify/jwt` was used as authentication token library.</p>
 
 * [Fastify](https://www.fastify.io/)
 * [zod](https://zod.dev/)
