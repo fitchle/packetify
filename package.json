@@ -12,6 +12,8 @@
     },
     "dependencies": {
         "fastify": "^4.15.0",
+        "fastify-jwt": "^4.2.0",
+        "fastify-plugin": "^4.5.0",
         "fastify-type-provider-zod": "^1.1.9",
         "zod": "^3.21.4"
     },
