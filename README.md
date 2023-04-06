@@ -10,15 +10,14 @@
 <p>📦 📦 📦 📦</p>
 <p align="center" style="margin-top: 0; font-size: 1.2rem;">
     packet based asynchronous rest library for backend applications.
+    <br />
     <p>(read -> handle -> write)</p>
     <br />
-    <br />
-    <br />
-    <a href="https://github.com/fitchle/packetify/wiki"><strong>📖 Documents 📖</strong></a>
-    <br />
-    <a href="https://github.com/fitchle/packetify/issues">Report Bug</a>
+    <a href="https://github.com/fitchle/packetify/wiki">📖 Documents 📖</a>
     ·
-    <a href="https://github.com/fitchle/packetify/issues">Request Feature</a>
+    <a href="https://github.com/fitchle/packetify/issues">🕷️ Report Bug 🕷️</a>
+    ·
+    <a href="https://github.com/fitchle/packetify/issues">💎 Request Feature 💎</a>
   </p>
 </div>
 <div align="center">
