@@ -1,10 +1,10 @@
-import { FastifySchema } from "fastify";
 import { ZodSchema, z } from "zod";
+import { PacketEventListener } from "./PacketEventListener";
 
-export class Packet {
+export class Packet extends PacketEventListener {
   path: string = "/";
   method: PacketMethod = PacketMethod.GET;
-  schema: FastifySchema = {};
+  schema: ZodSchema = z.object({});
 
   data: {params: {} | any, query: {} | any} = {params: {}, query: {}};
 
@@ -22,7 +22,7 @@ export class Packet {
 export function packet<T extends { new (...args: any[]): {} }>(
   path: string = "/",
   method: PacketMethod = PacketMethod.GET,
-  schema: FastifySchema = {}
+  schema: ZodSchema = z.object({}),
 ) {
   return (constructor: T) => {
     return class extends constructor {
