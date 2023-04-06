@@ -1,0 +1,23 @@
+{
+    "name": "@fitchle/packetify",
+    "version": "1.0.0",
+    "description": "mvc framework for backend applications.",
+    "main": "src/core/packetify.ts",
+    "repository": "https://github.com/fitchle/backly.git",
+    "author": "Gimble <79212283+gimbledev@users.noreply.github.com>",
+    "license": "MIT",
+    "scripts": {
+        "start": "ts-node ./src/core/packetify.ts",
+        "dev": "nodemon"
+    },
+    "dependencies": {
+        "fastify": "^4.15.0",
+        "zod": "^3.21.4"
+    },
+    "devDependencies": {
+        "@types/node": "^18.15.11",
+        "nodemon": "^2.0.22",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.0.3"
+    }
+}
