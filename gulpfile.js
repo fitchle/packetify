@@ -1,32 +1,38 @@
-const babel = require("gulp-babel"),
+const
     gulp = require("gulp"),
-    sourcemaps = require("gulp-sourcemaps"),
     clean = require('gulp-clean'),
+    swc = require("gulp-swc"),
     exec = require('gulp-exec');
-typescript = require("gulp-typescript");
+
+
+const swcOptions = {
+    "jsc": {
+        "target": "es2020",
+        "parser": {
+            "syntax": "typescript",
+            "decorators": true,
+            "dynamicImport": true
+        },
+        "transform": {
+            "decoratorMetadata": true,
+            "legacyDecorator": true
+        },
+        "keepClassNames": true,
+        "externalHelpers": true,
+        "loose": false
+    },
+    "module": {
+        "type": "es6",
+        "strict": true,
+        "noInterop": true
+    },
+    "exclude": ["./src/**/.*.spec.ts$", "./**/.*.js$"],
+    "sourceMaps": true,
+    "isModule": true,
+}
 
 gulp.task('compile', function() {
-    const typeScript = gulp.src('src/**/*.ts')
-        .pipe(sourcemaps.init())
-        .pipe(typescript({
-            target: "es5",
-            module: "commonjs",
-            declaration: true,
-            outDir: './build',
-            experimentalDecorators: true,
-            resolveJsonModule: true,
-            esModuleInterop: true,
-            inlineSourceMap: true,
-        }));
-
-    return typeScript.js
-        .pipe(babel({
-            "presets": ["@babel/preset-env", "@babel/preset-typescript"],
-            "plugins": [
-                ["@babel/plugin-proposal-decorators", { "legacy": true }]
-            ]
-        }))
-        .pipe(gulp.dest('build'))
+    return gulp.src('src/**/*.ts').pipe(swc(swcOptions)).pipe(gulp.dest('build'));
 })
 
 gulp.task('init', function() {
