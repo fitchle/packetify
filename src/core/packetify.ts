@@ -1,76 +1,40 @@
 "use strict";
 
-import Fastify, { FastifyBaseLogger, FastifyError, FastifyReply, FastifyRequest, FastifySchema, FastifyTypeProviderDefault, RawServerDefault, RouteGenericInterface } from 'fastify'
+import Fastify from "fastify";
+import config from "../assets/config.json";
+import { PacketManager } from "./packet/PacketManager";
+import { PacketifyPacket } from "./packet/PacketifyPacket";
+import { packetbase } from "./packet/PacketPlugin";
+import { authbase } from "./auth/AuthPlugin";
+const fastify = Fastify();
 
-const fastify = Fastify({
-    logger: true
-})
-
-import fp from 'fastify-plugin';
-
-import config from '../assets/config.json';
-import { PacketManager } from './packet/PacketManager';
-import { Packet, PacketMethod, packet } from './packet/Packet';
-import { z } from 'zod';
-import { ZodTypeProvider, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
-import { ResolveFastifyRequestType } from 'fastify/types/type-provider';
-import { IncomingMessage, ServerResponse } from 'http';
-import { packetbase } from './packet/PacketPlugin';
-import { authbase } from './auth/AuthPlugin';
-
-
+import { PacketifyCLI } from "./cli/cli";
 
 export class Packetify {
-    packetManager: PacketManager = new PacketManager();
+  packetManager: PacketManager = new PacketManager();
+  
+  async listen(port: number = config.server.port) {
+    const cli: PacketifyCLI = new PacketifyCLI();
 
-    async listen(port: number = config.server.port) {
-        fastify.listen({ port: port }, (err: any) => {
-            if (err) throw err
-        })
+    fastify.listen({ port: port }, (err: any) => {
+      if (err) throw err;
+    });
+    
+    this.init();
 
-        this.init();
-    }
+    cli.run({ port: port, packets: this.packetManager.all() });
+  }
 
-    private async init() {
-        this.hookPlugins();
-    }
+  private async init() {
+    this.hookPlugins();
+  }
 
+  private async hookPlugins() {
+    fastify.register(authbase);
+    fastify.register(packetbase, { packetManager: this.packetManager });
+  }
 
-    async hookPlugins() {
-        fastify.register(authbase)
-        fastify.register(packetbase, {packetManager: this.packetManager})
-    }
-
-    register(packet: Packet): void {
-        this.packetManager.register(packet);
-    }
+  register(packet: PacketifyPacket): void {
+    this.packetManager.register(packet);
+  }
 }
-
-const packetify = new Packetify();
-
-@packet("/qwe/:id", PacketMethod.GET, z.object({
-    username: z.string().max(3),
-    password: z.string()
-}))
-class TestPacket extends Packet {
-    read(data: any): void {
-        this.data = data;
-    }
-
-    handle(): void {
-        console.log(this.data.query)
-    }
-
-    write() {
-        return {"asdasdasd": "asdasd"};
-    }
-
-    onError(error: FastifyError, request: FastifyRequest<RouteGenericInterface, RawServerDefault, IncomingMessage, FastifySchema, FastifyTypeProviderDefault, unknown, FastifyBaseLogger, ResolveFastifyRequestType<FastifyTypeProviderDefault, FastifySchema, RouteGenericInterface>>, reply: FastifyReply<RawServerDefault, IncomingMessage, ServerResponse<IncomingMessage>, RouteGenericInterface, unknown, FastifySchema, FastifyTypeProviderDefault, unknown>): void {
-        console.log(error)
-        reply.send("ERROR!")
-    }
-}
-
-packetify.register(new TestPacket())
-
-packetify.listen();

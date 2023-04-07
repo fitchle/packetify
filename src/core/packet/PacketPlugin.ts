@@ -1,10 +1,6 @@
 import { ZodTypeProvider, serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 import { PacketManager } from "./PacketManager";
-import { FastifyBaseLogger, FastifyError, FastifyInstance, FastifyReply, FastifyRequest, FastifySchema, FastifyTypeProviderDefault, RawServerDefault, RouteGenericInterface } from "fastify";
-import { ResolveFastifyRequestType } from "fastify/types/type-provider";
-import { IncomingMessage, ServerResponse } from "http";
-import { z } from "zod";
-import { packet, PacketMethod, Packet } from "./Packet";
+import { FastifyInstance } from "fastify";
 
 export function packetbase(fastify: FastifyInstance, opts: any, next: any) {
     const packetManager: PacketManager = opts.packetManager;

@@ -1,0 +1,16 @@
+{
+    "name": "packetify",
+    "version": "1.0.0",
+    "description": "mvc framework for backend applications.",
+    "main": "src/core/packetify.js",
+    "repository": "https://github.com/fitchle/packetify.git",
+    "author": "Gimble <79212283+gimbledev@users.noreply.github.com>",
+    "license": "MIT",
+    "dependencies": {
+        "fastify": "^4.15.0",
+        "fastify-jwt": "^4.2.0",
+        "fastify-plugin": "^4.5.0",
+        "fastify-type-provider-zod": "^1.1.9",
+        "zod": "^3.21.4"
+    }
+}

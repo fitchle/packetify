@@ -1,13 +1,13 @@
-import { Packet } from "./Packet";
+import { PacketifyPacket } from "./PacketifyPacket";
 
 export class PacketManager {
-    private packets: Packet[] = [];
+    private packets: PacketifyPacket[] = [];
     
-    register(packet: Packet) {
+    register(packet: PacketifyPacket) {
         this.packets.push(packet);
     }
 
-    all(): Packet[] {
+    all(): PacketifyPacket[] {
         return this.packets;
     }
 }
