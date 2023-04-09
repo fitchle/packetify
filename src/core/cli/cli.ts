@@ -1,89 +1,121 @@
-import chalk from "chalk";
-
-import tk from "terminal-kit";
-const term = tk.terminal;
 import align from "align-text";
 import gradient from "gradient-string";
-import prompt from "prompts";
-import { PacketifyPacket } from "../packet/PacketifyPacket";
+import { PacketifyPacket } from "../packet/PacketifyPacket.js";
+import { terminal } from "terminal-kit";
+import kleur from "kleur";
+import winston from "winston";
+
+export const logger = winston.createLogger({
+  levels: winston.config.syslog.levels,
+  format: winston.format.combine(
+    winston.format.timestamp({
+      format: "YYYY-MM-DD HH:mm:ss",
+    }),
+    winston.format.metadata({ fillExcept: ["message", "level", "timestamp"] }),
+    winston.format.printf(
+      (info) =>
+        JSON.stringify(
+          {
+            time: info.timestamp,
+            level: info.level,
+            message: info.message,
+            data: info.metadata,
+          },
+          undefined,
+          2
+        ) + ","
+    )
+  ),
+  transports: [new winston.transports.File({ filename: "packetify.log" })],
+});
 
 export class PacketifyCLI {
-  async run(args: any) {
+  promptLoc: [any, any] = [0, 0];
 
-    term.clear();
-    term
+  async run(args: any) {
+    terminal.clear();
+    terminal.resetScrollingRegion();
+    terminal
       .nextLine(1)
-      .white(align(gradient("orange", "yellow")("📦  Packetify 📦"), 106));
-    term
+      .white(align(gradient("orange", "yellow")("📦  Packetify 📦"), 14));
+    terminal
       .nextLine(2)
       .white(
         align(
           gradient("orange", "yellow")("packet") +
-            chalk.white(" based ") +
+            kleur.white(" based ") +
             gradient("orange", "yellow")("asynchronous") +
-            chalk.white(" rest library\n      for backend applications."),
-          96
+            kleur.white(" rest library\n      for backend applications."),
+          4
         )
       );
-    term.nextLine(2).green(align("(read -> handle -> write)", 102));
+    terminal.nextLine(2).green(align("(read -> handle -> write)", 10));
 
-    term.nextLine(3).white(align(this.calculatePackets(args.packets), 106))
-    term
+    terminal.nextLine(2).white(align(this.calculatePackets(args.packets), 14));
+    terminal
       .nextLine(2)
       .white(
         align(
-          chalk.green("[!]") +
+          kleur.green("[!]") +
             " Server listening at " +
             gradient("blue", "#6366f1")("http://localhost:" + args.port + "/"),
-          93
+          4
         )
       );
-    term
-      .nextLine(2)
-      .white(
-        align(
-          "    " +
-            chalk.bold("(r)") +
-            " Restart    " +
-            chalk.bold("(e)") +
-            " Exit    " +
-            chalk.bold("(b)") +
-            " Build",
-          93
-        )
-      );
-    this.initPrompt();
+    terminal.hideCursor();
+    this.initLogger();
   }
 
-  private async initPrompt() {
-    term.nextLine(3);
-    await prompt({
-      type: "text",
-      name: "command",
-      message: "Shell",
-      validate: (command) => {
-        if (command === "e") {
-          const bar = term.progressBar({ title: chalk.red("Exiting...") + "" });
-          setTimeout(() => {
-            bar.stop();
-            process.exit();
-          }, 1000 * 1.3);
-          return true;
-        }
-        if (command === "b") {
-          return true;
-        }
-        return false;
-      },
+  private initLogger() {
+    terminal.nextLine(2);
+
+    logger.on("data", (chunk) => {
+      let stops: any[] = [];
+      switch (chunk.level) {
+        case "error":
+          stops = ["#e52d27", "#b31217"];
+          break;
+        case "warn":
+          stops = ["#F2994A", "#F2C94C"];
+          break;
+        case "debug":
+          stops = ["#7F00FF", "#E100FF"];
+          break;
+        case "info":
+          stops = ["orange", "#a33129"];
+          break;
+      }
+      if (chunk.message instanceof Object) {
+        chunk.message =
+          kleur.green("[" + typeof chunk.message + "] => ") +
+          "\n\n" +
+          kleur.gray(JSON.stringify(chunk.message, null, 2)) +
+          "\n\n";
+      }
+      terminal.white(
+        "\n" +
+          kleur.gray().bold("{ " + chunk.timestamp + " }") +
+          " " +
+          kleur.bold(
+            gradient("blue", "cyan")(`{ ${chunk.metadata.packet.method} }`)
+          ) +
+          " " +
+          kleur.bold(
+            gradient(
+              "orange",
+              "yellow"
+            )(`{ 📦 ==> ${chunk.metadata.packet.path} }`)
+          ) +
+          " " +
+          kleur.bold(gradient(stops)("[ " + chunk.level.toUpperCase() + " ]")) +
+          " " +
+          kleur.white(chunk.message)
+      );
     });
-
-    this.initPrompt();
   }
-
   private calculatePackets(packets: PacketifyPacket[]) {
-    const packetNames: string[] = [];
-    packets.forEach((packet) => packetNames.push(packet.name))
-    const format = chalk.bold.yellow(packets.length) + chalk.white(" packets loaded.") + (packetNames.length > 0 ? chalk.gray("(" + packetNames.join(",") + ")") : "");
+    const format =
+      kleur.yellow(packets.length) + kleur.white(" packets loaded.");
     return format;
   }
 }

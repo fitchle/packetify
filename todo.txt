@@ -1,4 +1,4 @@
-1. FIX SWC DECORATOR PROBLEM
+📗 1. FIX SWC DECORATOR PROBLEM (FIXED)
 
 @Packet("/", PacketMethod.GET, z.object({}))
 ^

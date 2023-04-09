@@ -1,10 +1,9 @@
-const { Packetify } = require("packetify");
-const { PacketifyPacket, Packet, PacketMethod } = require("packetify/src/core/packet/PacketifyPacket");
-const { z } = require("zod");
+import { Packetify, PacketifyPacket } from "packetify";
 
 const p = new Packetify();
 
-@Packet("/", PacketMethod.GET, z.object({}))
+
+
 class MyPacket extends PacketifyPacket {
     /**
      * 
@@ -48,7 +47,5 @@ class MyPacket extends PacketifyPacket {
 
 
 }
-
-p.register(new MyPacket())
 
 p.listen();

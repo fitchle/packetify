@@ -1,0 +1,24 @@
+{
+    "jsc": {
+        "target": "esnext",
+        "parser": {
+            "syntax": "typescript",
+            "decorators": true,
+            "dynamicImport": false
+        },
+        "transform": {
+            "decoratorMetadata": true,
+            "legacyDecorator": true
+        },
+        "keepClassNames": true,
+        "loose": true
+    },
+    "module": {
+        "type": "commonjs",
+        "strict": true,
+        "noInterop": false
+    },
+    "exclude": ["./src/**/.*.spec.ts$", "./**/.*.js$"],
+    "sourceMaps": true,
+    "isModule": true
+}

@@ -1,4 +1,4 @@
-import { PacketifyPacket } from "./PacketifyPacket";
+import { PacketifyPacket } from "./PacketifyPacket.js";
 
 export class PacketManager {
     private packets: PacketifyPacket[] = [];
