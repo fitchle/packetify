@@ -1,7 +1,7 @@
 <br />
 <br />
 <div align="center">
-    <img src="https://i.ibb.co/1fBzgRN/Benchion-Sockets.png" alt="Logo" width="150">
+    <img src="https://user-images.githubusercontent.com/79212283/231085956-a6c873d1-55f9-4ef4-8940-2a669571f86e.gif" alt="Logo" width="full">
 </div>
 
 <div align="center">
