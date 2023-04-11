@@ -1,13 +1,13 @@
 <br />
 <br />
 <div align="center">
-    <img src="https://user-images.githubusercontent.com/79212283/231085956-a6c873d1-55f9-4ef4-8940-2a669571f86e.gif" alt="Logo" width="full">
+    <img src="https://user-images.githubusercontent.com/79212283/231177135-b486e210-d2b3-4254-94fe-b1fe8ce09551.gif" alt="Logo" width="full">
 </div>
+
 
 <div align="center">
 
-<h1 align="center" style="margin: 0;">packetify</h1>
-<p>📦 📦 📦 📦</p>
+<h1 align="center" style="margin: 0;"> </h1>
 <p align="center" style="margin-top: 0; font-size: 1.2rem;">
     packet based asynchronous rest library for backend applications.
     <br />
