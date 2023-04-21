@@ -10,5 +10,4 @@ gulp.task("init", function() {
     return gulp.src(`include/**/*`).pipe(gulp.dest(`build/`));
 });
 
-
 gulp.task("build", gulp.series("compile", "init"));

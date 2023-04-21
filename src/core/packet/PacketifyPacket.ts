@@ -1,15 +1,15 @@
-import { ZodSchema, z } from "zod";
 import { PacketEventListener } from "./PacketEventListener.js";
 import { logger } from "../cli/cli.js";
+import type { FastifySchema } from "fastify";
 
 export class PacketifyPacket extends PacketEventListener {
   path: string = "/";
   method: string = PacketMethod.GET;
 
-  querySchema: ZodSchema = z.object({})
-  bodySchema: ZodSchema = z.object({})
-  paramSchema: ZodSchema = z.object({})
-  headerSchema: ZodSchema = z.object({})
+  querySchema: FastifySchema = {};
+  bodySchema: FastifySchema = {};
+  paramSchema: FastifySchema = {};
+  headerSchema: FastifySchema = {};
 
   constructor() {
     super();
@@ -19,7 +19,12 @@ export class PacketifyPacket extends PacketEventListener {
   data: { params: {} | any; query: {} | any } = { params: {}, query: {} };
 
   read(
-    data: { params: any; query: any; body: any, headers: any } = { params: {}, query: {}, body: {}, headers: {} }
+    data: { params: any; query: any; body: any; headers: any } = {
+      params: {},
+      query: {},
+      body: {},
+      headers: {},
+    }
   ): void {
     this.data = data;
   }
@@ -34,32 +39,40 @@ export class PacketifyPacket extends PacketEventListener {
 
   private initLogger() {
     console.log = (...args) => {
-      logger.info(...args, {packet: {
-        method: this.method,
-        path: this.path
-      }})
-    }
+      logger.info(...args, {
+        packet: {
+          method: this.method,
+          path: this.path,
+        },
+      });
+    };
 
     console.error = (...args) => {
-      logger.error(...args, {packet: {
-        method: this.method,
-        path: this.path
-      }})
-    }
+      logger.error(...args, {
+        packet: {
+          method: this.method,
+          path: this.path,
+        },
+      });
+    };
 
     console.warn = (...args) => {
-      logger.warn(...args, {packet: {
-        method: this.method,
-        path: this.path
-      }})
-    }
+      logger.warn(...args, {
+        packet: {
+          method: this.method,
+          path: this.path,
+        },
+      });
+    };
 
     console.debug = (...args) => {
-      logger.debug(...args, {packet: {
-        method: this.method,
-        path: this.path
-      }})
-    }
+      logger.debug(...args, {
+        packet: {
+          method: this.method,
+          path: this.path,
+        },
+      });
+    };
 
     console.info = console.log;
   }
@@ -78,7 +91,7 @@ export function Packet<T extends { new (...args: any[]): {} }>(
 }
 
 export function QuerySchema<T extends { new (...args: any[]): {} }>(
-  schema: ZodSchema = z.object({})
+  schema: FastifySchema = {}
 ) {
   return (constructor: T) => {
     return class extends constructor {
@@ -88,7 +101,7 @@ export function QuerySchema<T extends { new (...args: any[]): {} }>(
 }
 
 export function BodySchema<T extends { new (...args: any[]): {} }>(
-  schema: ZodSchema = z.object({})
+  schema: FastifySchema = {}
 ) {
   return (constructor: T) => {
     return class extends constructor {
@@ -98,7 +111,7 @@ export function BodySchema<T extends { new (...args: any[]): {} }>(
 }
 
 export function ParamSchema<T extends { new (...args: any[]): {} }>(
-  schema: ZodSchema = z.object({})
+  schema: FastifySchema = {}
 ) {
   return (constructor: T) => {
     return class extends constructor {
@@ -108,7 +121,7 @@ export function ParamSchema<T extends { new (...args: any[]): {} }>(
 }
 
 export function HeaderSchema<T extends { new (...args: any[]): {} }>(
-  schema: ZodSchema = z.object({})
+  schema: FastifySchema = {}
 ) {
   return (constructor: T) => {
     return class extends constructor {

@@ -30,12 +30,9 @@
         "fastify": "^4.15.0",
         "fastify-jwt": "^4.2.0",
         "fastify-plugin": "^4.5.0",
-        "fastify-type-provider-zod": "^1.1.9",
-        "fs": "^0.0.1-security",
         "gradient-string": "^2.0.2",
         "kleur": "^4.1.5",
         "terminal-kit": "^3.0.0",
-        "winston": "^3.8.2",
-        "zod": "^3.21.4"
+        "winston": "^3.8.2"
     }
 }
