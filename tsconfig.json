@@ -1,17 +1,20 @@
 {
-  "include": ["src/**/*"],
   "compilerOptions": {
-      "noImplicitAny": true,
-      "target": "ESNext",
-      "module": "ESNext",
-      "esModuleInterop": true,
-      "strict": true,
-      "sourceMap": true,
-      "experimentalDecorators": true,
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "rootDir": "./src",
+    "noImplicitAny": true,
+    "target": "ESNext",
+    "module": "CommonJS",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "rootDir": "./src",
+    "declaration": true,
+    "outDir": "./lib",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
-  
-  "exclude": ["test/**/*.js"]
+  "include": ["src"],
+  "exclude": ["node_modules", "**/__tests__/*"]
 }
